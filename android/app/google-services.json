@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "702588210131",
+    "firebase_url": "https://sowhathappened-e5efe.firebaseio.com",
+    "project_id": "sowhathappened-e5efe",
+    "storage_bucket": "sowhathappened-e5efe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:702588210131:android:2cc6a7f42ff4e9437cfd26",
+        "android_client_info": {
+          "package_name": "me.giftee.sowhathappened"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "702588210131-gm05g4iqih1j99f3bhu3gcbuk91r2pmq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.giftee.sowhathappened",
+            "certificate_hash": "91960ddc76accb1b475eaf5fa61fc3a452e5d520"
+          }
+        },
+        {
+          "client_id": "702588210131-fc8ls9b0qa3igc2f37cogldcgn3a66id.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkhtJPBkbj5xBDyMsxx6qV1j8ha9W85A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "702588210131-fc8ls9b0qa3igc2f37cogldcgn3a66id.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
