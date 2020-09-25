@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sowhathappened/home_page.dart';
 import 'package:sowhathappened/models/user.dart';
 import 'package:sowhathappened/services/auth.dart';
+import 'package:sowhathappened/services/queries.dart';
 import 'package:sowhathappened/style/style_standard.dart';
 
 void main() => runApp(MyApp());
@@ -12,8 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return StreamProvider<User>.value(
-      value: AuthService().user,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>.value(value: AuthService().user),
+        ChangeNotifierProvider<Queries>(create: (_) => Queries(),)
+      ],
       child: MaterialApp(
         title: '그래서 어떻게 됐는데',
         theme: ThemeData(

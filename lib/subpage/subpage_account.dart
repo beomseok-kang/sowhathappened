@@ -7,7 +7,7 @@ import 'package:sowhathappened/models/user.dart';
 import 'package:sowhathappened/services/auth.dart';
 import 'package:sowhathappened/services/database.dart';
 import 'package:sowhathappened/style/style_standard.dart';
-import 'package:sowhathappened/subsubpage_read/subsubpage_readpost.dart';
+import 'package:sowhathappened/UI/list_tile.dart';
 
 class Account extends StatefulWidget {
   @override
@@ -138,101 +138,22 @@ class _AccountState extends State<Account> {
                                           padding: EdgeInsets.only(bottom: 12),
                                           physics: BouncingScrollPhysics(),
                                           itemCount: userData.written.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  20, 12, 20, 0),
-                                              height: 60,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Colors.white,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        offset: Offset(0, 13),
-                                                        blurRadius: 31,
-                                                        color: shadowColor())
-                                                  ]),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => ReadPost(
-                                                              userData
-                                                                  .written[
-                                                                      index]
-                                                                  .keys
-                                                                  .toString()
-                                                                  .replaceAll(
-                                                                      "(", "")
-                                                                  .replaceAll(
-                                                                      ")", ""),
-                                                              userData
-                                                                  .written[
-                                                                      index]
-                                                                  .values
-                                                                  .toList()[0]
-                                                                      [2]
-                                                                  .values
-                                                                  .toString()
-                                                                  .replaceAll(
-                                                                      "(", "")
-                                                                  .replaceAll(
-                                                                      ")", ""),
-                                                              user.uid)));
-                                                },
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    SizedBox(
-                                                        child: Text('주제: ' +
-                                                            cutBracket(cutBracket(
-                                                                userData
-                                                                    .written[
-                                                                        index]
-                                                                    .values
-                                                                    .toList()[0]
-                                                                        [0]
-                                                                    .values
-                                                                    .toList()
-                                                                    .toString())), softWrap: true,
-                                                          overflow: TextOverflow.ellipsis,
-                                                        )
-                                                    ),
-                                                    SizedBox(
-                                                      child: Text(
-                                                        '글: ' +
-                                                            cutBracket(userData
-                                                                .written[index]
-                                                                .values
-                                                                .toList()[0][1]
-                                                                .values
-                                                                .toString()),
-                                                        style: TextStyle(
-                                                            fontSize: 12),
-                                                        softWrap: true,
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      child: Text('타입: ' +
-                                                          cutBracket(userData
-                                                              .written[index]
-                                                              .values
-                                                              .toList()[0][2]
-                                                              .values
-                                                              .toString()),
-                                                        softWrap: true,
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                          itemBuilder: (BuildContext context, int index) {
+                                            final props = ListViewTileProps(
+                                              postIndex: userData.written[index].keys.first,
+                                              texts: [],
+                                              text: userData.written[index].values.first[1]['글'],
+                                              topics: userData.written[index].values.first[0]['주제'],
+                                              type: userData.written[index].values.first[2]['타입']
+                                            );
+                                            return ListViewTile(
+                                              context: context,
+                                              index: index,
+                                              uid: user.uid,
+                                              props: props,
                                             );
                                           })
-                                      : Text('아직 쓴 글이 없습니다.'),
+                                          : Text('아직 쓴 글이 없습니다.'),
                                 ),
                                 SizedBox(
                                   child: feelingData.writing.length > 0
@@ -240,83 +161,20 @@ class _AccountState extends State<Account> {
                                           padding: EdgeInsets.only(bottom: 12),
                                           physics: BouncingScrollPhysics(),
                                           itemCount: feelingData.writing.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  20, 12, 20, 0),
-                                              height: 60,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Colors.white,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        offset: Offset(0, 13),
-                                                        blurRadius: 31,
-                                                        color: shadowColor())
-                                                  ]),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  print(feelingData
-                                                          .postIndex[index] +
-                                                      '\n' +
-                                                      cutBracket(feelingData
-                                                          .type[index].values
-                                                          .toString()));
-
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) => ReadPost(
-                                                              feelingData
-                                                                      .postIndex[
-                                                                  index],
-                                                              cutBracket(
-                                                                  feelingData
-                                                                      .type[
-                                                                          index]
-                                                                      .values
-                                                                      .toString()),
-                                                              user.uid)));
-                                                },
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    SizedBox(
-                                                      child: Text('주제: ' +
-                                                          cutBracket(cutBracket(
-                                                              feelingData
-                                                                  .topics[index]
-                                                                  .values
-                                                                  .toString())),
-                                                        softWrap: true,
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      child: Text(
-                                                        '글: ' +
-                                                            feelingData
-                                                                .writing[index],
-                                                        style: TextStyle(
-                                                            fontSize: 12),
-
-                                                        softWrap: true,
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      child: Text('타입: ' +
-                                                          cutBracket(feelingData
-                                                              .type[index].values
-                                                              .toString()),
-                                                        softWrap: true,
-                                                        overflow: TextOverflow.ellipsis,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                          itemBuilder: (BuildContext context, int index) {
+                                            final postIndex = feelingData.postIndex[index];
+                                            final props = ListViewTileProps(
+                                              postIndex: postIndex,
+                                              texts: [],
+                                              text: feelingData.writing[index],
+                                              topics: feelingData.topics[index][postIndex],
+                                              type: feelingData.type[index][postIndex]
+                                            );
+                                            return ListViewTile(
+                                              context: context,
+                                              index: index,
+                                              uid: user.uid,
+                                              props: props,
                                             );
                                           })
                                       : Text('좋아요를 누른 글이 없습니다.'),

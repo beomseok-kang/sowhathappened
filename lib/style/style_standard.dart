@@ -32,7 +32,7 @@ Color bgColor() {
 }
 
 Color appBarColor() {
-  return Color.fromRGBO(245, 250, 253, 0.8);
+  return Color.fromRGBO(238, 245, 253, 0.8);
 }
 
 Color textColor() {
@@ -40,11 +40,11 @@ Color textColor() {
 }
 
 Color colorOnSelection() {
-  return Color.fromRGBO(0, 56, 234, 0.6);
+  return Color.fromRGBO(0, 56, 234, 1);
 }
 
 Color colorNotSelected() {
-  return Color.fromRGBO(160, 168, 178, 0.8);
+  return Color.fromRGBO(112, 112, 112, 0.5);
 }
 
 Color colorForLike() {

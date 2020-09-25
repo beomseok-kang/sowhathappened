@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:sowhathappened/Authenticate/register.dart';
+import 'package:sowhathappened/UI/standard_button.dart';
 import 'package:sowhathappened/loading.dart';
 import 'package:sowhathappened/services/auth.dart';
 import 'package:sowhathappened/style/style_standard.dart';
@@ -34,37 +36,20 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
       ),
       backgroundColor: bgColor(),
-      body: Center(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: 50,),
-                Text('내 계정으로 로그인', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
+                  child: Text('로그인', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
+                ),
                 loading ? Loading() : _loginBody(),
 
               ],
             )
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 6,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('처음이신가요?',style: TextStyle(fontSize: 12, color: colorNotSelected()),),
-            SizedBox(
-              child: FlatButton(
-                child: Text('회원가입', style: TextStyle(fontSize: 12, color: Color.fromRGBO(250, 100, 100, 1), fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Register()));
-                },
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -117,7 +102,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Padding(padding: EdgeInsets.all(12),),
-              InkWell(
+              SizedBox(
+                height: 20,
+                child: Text(error, style: TextStyle(color: Colors.red, fontSize: 12)),
+              ),
+              StandardButton(
+                title: '로그인',
+                buttonColor: colorOnSelection(),
+                textColor: Colors.white,
                 onTap: () async {
                   if(_formKey.currentState.validate()) {
                     setState(() => loading = true);
@@ -130,30 +122,15 @@ class _LoginPageState extends State<LoginPage> {
                     } else {
                       Navigator.pop(context);
                     }
-                  }},
-                child: Container(
-                  width: 250,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: colorOnSelection(),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0,13),
-                        blurRadius: 31,
-                        color: shadowColor()
-                      )
-                    ]
-                  ),
-                  child: Center(child: Text('로그인', style: TextStyle(fontSize:16, color: Colors.white, fontWeight: FontWeight.bold),)),
-                ),
-              ),
-              Padding(padding: EdgeInsets.all(4),),
-              SizedBox(
-                height: 20,
-                child: Text(error, style: TextStyle(color: Colors.red, fontSize: 12)),
-              ),
-              Padding(padding: EdgeInsets.all(12),),
+                  }}),
+              SizedBox(height: 20,),
+              StandardButton(
+                title: '회원가입',
+                buttonColor: Colors.white,
+                textColor: colorOnSelection(),
+                onTap: () {
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => Register()));
+                }),
             ],
           ),
         ),

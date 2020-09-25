@@ -1,27 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sowhathappened/UI/rank_list.dart';
 import 'package:sowhathappened/UI/rank_list_doclist.dart';
 import 'package:sowhathappened/loading.dart';
+import 'package:sowhathappened/services/queries.dart';
 import 'package:sowhathappened/style/style_standard.dart';
 import 'package:sowhathappened/subsubpage_search/subsubpage_search.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  void Function() onMount;
 
-  QuerySnapshot qsShort;
-  QuerySnapshot qsLong;
-  List<DocumentSnapshot> qsShortHot;
-  List<DocumentSnapshot> qsLongHot;
+  Home({
+    @required this.onMount,
+  });
 
-  Home({@required this.qsShort, @required this.qsLong, @required this.qsShortHot, @required this.qsLongHot});
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    widget.onMount();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final queries = Provider.of<Queries>(context);
+    bool _hasData () {
+      return queries.qsShort != null
+        && queries.qsLong != null
+        && queries.qsShortHot != null
+        && queries.qsLongHot != null;
+    }
+
     return Scaffold(
       backgroundColor: bgColor(),
-      body: qsLong != null && qsShort != null && qsShortHot != null && qsLongHot != null
-          ? _buildBody(context)
+      body: _hasData()
+          ? _buildBody(queries)
           : Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -31,7 +50,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(context) {
+  Widget _buildBody(Queries queries) {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
@@ -46,14 +65,14 @@ class Home extends StatelessWidget {
           searchBar(context),
           SizedBox(height: 10,),
           RankDocList(
-            docList: qsShortHot,
+            docList: queries.qsShortHot,
             qsType: 'short',
             title: Text('핫한 짧은 글',
               style: TextStyle(fontSize: 22),
             ),
           ),
           RankDocList(
-            docList: qsLongHot,
+            docList: queries.qsLongHot,
             qsType: 'long',
             title: Text('핫한 긴 글',
               style: TextStyle(fontSize: 22),
@@ -61,13 +80,13 @@ class Home extends StatelessWidget {
           ),
           RankList(
             qsType: 'short',
-            qs: qsShort,
+            qs: queries.qsShort,
             title: Text('짧은 글 랭킹',
               style: TextStyle(fontSize: 22),
             ),
           ),
           RankList(
-            qs: qsLong,
+            qs: queries.qsLong,
             qsType: 'long',
             title: Text('긴 글 랭킹',
               style: TextStyle(fontSize: 22),

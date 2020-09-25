@@ -42,7 +42,6 @@ class _RelayJoinState extends State<RelayJoin> {
 
   Future<void> refreshList() async {
     initState();
-    return null;
   }
 
   @override
@@ -127,11 +126,20 @@ class _RelayJoinState extends State<RelayJoin> {
                     itemCount: qs.documents.length,
                     itemBuilder: (BuildContext context, int index) {
                       final user = Provider.of<User>(context);
+                      final ds = qs.documents[index];
+                      final props = ListViewTileProps(
+                        postIndex: ds.data['포스트인덱스'],
+                        texts: ds.data['글'],
+                        text: '',
+                        type: ds.data['타입'],
+                        topics: ds.data['주제']
+                      );
                       return ListViewTile(
                           context: context,
                           index: index,
                           uid: user.uid,
-                          qs: qs);
+                          props: props
+                      );
                     },
                   ),
                 ),

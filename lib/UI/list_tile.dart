@@ -1,16 +1,32 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sowhathappened/style/style_standard.dart';
 import 'package:sowhathappened/subsubpage_read/subsubpage_readpost.dart';
+
+class ListViewTileProps {
+  final String postIndex;
+  final String type;
+  final List<dynamic> topics;
+  final List<dynamic> texts;
+  final dynamic text;
+
+  ListViewTileProps({
+    @required this.postIndex,
+    @required this.type,
+    @required this.topics,
+    @required this.texts,
+    @required this.text
+  });
+}
 
 class ListViewTile extends StatelessWidget {
 
   final BuildContext context;
   final int index;
   final String uid;
-  final QuerySnapshot qs;
+  final ListViewTileProps props;
+  
 
-  ListViewTile({@required this.context,@required this.index,@required this.uid,@required this.qs});
+  ListViewTile({@required this.context,@required this.index,@required this.uid,@required this.props});
 
 
   @override
@@ -37,8 +53,8 @@ class ListViewTile extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ReadPost(
-              qs.documents[index].data['포스트인덱스'],
-              qs.documents[index].data['타입'],
+              props.postIndex,
+              props.type,
               uid
           )
           )
@@ -60,10 +76,11 @@ class ListViewTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(qs.documents[index].data['글'][0],
+                  Text(
+                    props.texts.length > 0 ? props.texts[0] : props.text,
                     overflow: TextOverflow.ellipsis, maxLines: 1,
                   ),
-                  Text('주제: '+ cutBracket(qs.documents[index].data['주제'].toString()),
+                  Text('주제: '+ cutBracket(props.topics.toString()),
                     overflow: TextOverflow.ellipsis, maxLines: 1,
                   ),
                 ],
@@ -73,7 +90,9 @@ class ListViewTile extends StatelessWidget {
               width: wStandard * 0.1,
               child: Center(
                   child: Text(
-                      '${qs.documents[index].data['글'].length}/10',
+                       props.texts.length > 0
+                       ? '${props.texts.length}/10'
+                       : props.type,
                     style: TextStyle(
                       fontSize: wStandard*0.035
                     ),
