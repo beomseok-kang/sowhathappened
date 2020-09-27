@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +18,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
- 
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     final queries = Provider.of<Queries>(context);
 
-    Future<void> refresh() {
+    Future<void> refresh() async {
+      await Future.delayed(Duration(milliseconds: 500));
       queries.refreshHome();
       return null;
     }
@@ -32,13 +33,12 @@ class _HomePageState extends State<HomePage> {
     Widget _homeWithRefresh() {
       return RefreshIndicator(
         onRefresh: refresh,
-        child: Home(
-          onMount: () => queries.refreshHome
-        ),
+        child: Home(onMount: () => queries.refreshHome()),
       );
     }
+
     Widget _readWithRefresh() {
-      return Read(onRefresh: queries.refreshRead);
+      return Read(onRefresh: () => queries.refreshRead());
     }
 
     List _pages = [_homeWithRefresh(), Write(), _readWithRefresh(), Account()];
@@ -64,38 +64,31 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: colorNotSelected(),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 25,
-            ),
-            title: SizedBox()
-          ),
+              icon: Icon(
+                Icons.home,
+                size: 25,
+              ),
+              title: SizedBox()),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.create,
-              size: 25,
-            ),
-            title: SizedBox()
-          ),
+              icon: Icon(
+                Icons.create,
+                size: 25,
+              ),
+              title: SizedBox()),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.bookmark,
-              size: 25,
-            ),
-            title: SizedBox()
-          ),
+              icon: Icon(
+                Icons.bookmark,
+                size: 25,
+              ),
+              title: SizedBox()),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 25,
-            ),
-            title: SizedBox()
-          ),
+              icon: Icon(
+                Icons.person,
+                size: 25,
+              ),
+              title: SizedBox()),
         ],
       ),
     );
   }
-
-  
-
 }

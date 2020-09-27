@@ -60,35 +60,52 @@ class _AccountState extends State<Account> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(
-                            height: 50,
+                            height: 40,
                           ),
-                          Text(userData.nickname),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+                                child: Text('내 정보', style: bigHeaderStyle()),
+                              ),
+                              Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  showLogoutAlertDialog(context);
+                                },
+                                child: Container(
+                                    width: 80,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        color: colorOnSelection(),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              offset: Offset(0, 13),
+                                              blurRadius: 31,
+                                              color: shadowColor())
+                                        ]),
+                                    child: Center(
+                                        child: Text(
+                                      '로그아웃',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ))),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              )
+                            ],
+                          ),
                           SizedBox(
                             height: 20,
                           ),
-                          InkWell(
-                            onTap: () {
-                              showLogoutAlertDialog(context);
-                            },
-                            child: Container(
-                                width: 80,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: colorOnSelection(),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          offset: Offset(0, 13),
-                                          blurRadius: 31,
-                                          color: shadowColor())
-                                    ]),
-                                child: Center(
-                                    child: Text(
-                                  '로그아웃',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ))),
+                          Text(
+                            userData.nickname,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             height: 20,
@@ -138,14 +155,18 @@ class _AccountState extends State<Account> {
                                           padding: EdgeInsets.only(bottom: 12),
                                           physics: BouncingScrollPhysics(),
                                           itemCount: userData.written.length,
-                                          itemBuilder: (BuildContext context, int index) {
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             final props = ListViewTileProps(
-                                              postIndex: userData.written[index].keys.first,
-                                              texts: [],
-                                              text: userData.written[index].values.first[1]['글'],
-                                              topics: userData.written[index].values.first[0]['주제'],
-                                              type: userData.written[index].values.first[2]['타입']
-                                            );
+                                                postIndex: userData
+                                                    .written[index].keys.first,
+                                                texts: [],
+                                                text: userData.written[index]
+                                                    .values.first[1]['글'],
+                                                topics: userData.written[index]
+                                                    .values.first[0]['주제'],
+                                                type: userData.written[index]
+                                                    .values.first[2]['타입']);
                                             return ListViewTile(
                                               context: context,
                                               index: index,
@@ -153,7 +174,7 @@ class _AccountState extends State<Account> {
                                               props: props,
                                             );
                                           })
-                                          : Text('아직 쓴 글이 없습니다.'),
+                                      : Text('아직 쓴 글이 없습니다.'),
                                 ),
                                 SizedBox(
                                   child: feelingData.writing.length > 0
@@ -161,15 +182,19 @@ class _AccountState extends State<Account> {
                                           padding: EdgeInsets.only(bottom: 12),
                                           physics: BouncingScrollPhysics(),
                                           itemCount: feelingData.writing.length,
-                                          itemBuilder: (BuildContext context, int index) {
-                                            final postIndex = feelingData.postIndex[index];
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final postIndex =
+                                                feelingData.postIndex[index];
                                             final props = ListViewTileProps(
-                                              postIndex: postIndex,
-                                              texts: [],
-                                              text: feelingData.writing[index],
-                                              topics: feelingData.topics[index][postIndex],
-                                              type: feelingData.type[index][postIndex]
-                                            );
+                                                postIndex: postIndex,
+                                                texts: [],
+                                                text:
+                                                    feelingData.writing[index],
+                                                topics: feelingData
+                                                    .topics[index][postIndex],
+                                                type: feelingData.type[index]
+                                                    [postIndex]);
                                             return ListViewTile(
                                               context: context,
                                               index: index,

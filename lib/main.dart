@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Queries>(create: (_) => Queries(),)
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: '그래서 어떻게 됐는데',
         theme: ThemeData(
           fontFamily: "NotoSans",

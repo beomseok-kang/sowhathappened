@@ -23,11 +23,17 @@ class Write extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: 15,
+              height: 40,
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
+              child: Text('글 쓰기', style: bigHeaderStyle()),
+            ),
+            SizedBox(
+              height: 20,
             ),
             buttonToRelay(user, 'short', context),
             SizedBox(
@@ -54,8 +60,8 @@ class Write extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => RelayJoin(
-                  type: type,
-                )),
+                      type: type,
+                    )),
           );
         } else {}
       },
@@ -64,15 +70,15 @@ class Write extends StatelessWidget {
         height: 150,
         width: double.maxFinite,
         decoration: BoxDecoration(
-            color: colorOnSelection(),
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: shadowColor(),
-                offset: Offset(0, 13),
-                blurRadius: 31,
-              ),
-            ],
+          color: colorOnSelection(),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor(),
+              offset: Offset(0, 13),
+              blurRadius: 31,
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -83,16 +89,17 @@ class Write extends StatelessWidget {
                   ? '짧은 글 릴레이'
                   : type == 'long' ? '긴 글 릴레이' : '혼자 쓰는 글',
               style: TextStyle(
-                color: Colors.white,
+                  color: Colors.white,
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 3,
             ),
-            Text(type == 'short'
-                ? '100자 이내의 짧은 글 릴레이'
-                : type == 'long' ? '500자 이내의 긴 글 릴레이' : '내가 혼자 완성하는 글',
+            Text(
+              type == 'short'
+                  ? '100자 이내의 짧은 글 릴레이'
+                  : type == 'long' ? '500자 이내의 긴 글 릴레이' : '내가 혼자 완성하는 글',
               style: TextStyle(color: Colors.white, fontSize: 15),
             ),
           ],

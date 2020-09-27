@@ -12,7 +12,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-
   String text = '';
   final _formKey = GlobalKey<FormState>();
   final textFieldController = TextEditingController();
@@ -27,9 +26,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: bgColor(),
       appBar: AppBar(
-        backgroundColor: appBarColor(),
-        title: Text('검색', style: titleStyle(),),
-        centerTitle: true,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: _buildBody(context),
@@ -37,82 +34,51 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildBody(context) {
-
     final user = Provider.of<User>(context);
 
     return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 20,),
-            Text('글 인덱스를 통해 검색이 가능합니다.\n복사한 글 인덱스를 붙여넣기 해 주세요.', textAlign: TextAlign.center,),
-            SizedBox(height: 50,),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextFormField(
-                      validator: (val) => text.length < 1 ? '검색할 내용을 입력해 주세요.' : null,
-                      controller: textFieldController,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 2)
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.cancel, color: Colors.grey,),
-                          onPressed: () {
-                            setState(() {
-                              text = '';
-                              textFieldController.clear();
-                            });
-                          },
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          text = val;
-                        });
-                      },
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.search, color: Colors.grey,),
-                    onPressed: () async {
-                      if(_formKey.currentState.validate()) {
-                        await setState(() {
-                          if(_isShort) {
-                            type = 'short';
-                          } else {type = 'long';}
-                        });
-                        Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => ReadPost(text, type, user != null ? user.uid : 'Null')
-                        ));
-                      }
-                    },
-                  )
-                ],
-              ),
+        child: Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+            child: Text('검색', style: bigHeaderStyle()),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: Text(
+              '글 인덱스를 통해 검색이 가능합니다.\n복사한 글 인덱스를 붙여넣기 해 주세요.',
+              textAlign: TextAlign.start,
             ),
-            SizedBox(height: 50,),
-            ToggleButtons(
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Center(
+            child: ToggleButtons(
               children: <Widget>[
                 Container(
-                  width: 100,
-                  height: 50,
+                  width: 90,
+                  height: 35,
                   child: Center(child: Text('짧은 글')),
                 ),
                 Container(
-                  width: 100,
-                  height: 50,
+                  width: 90,
+                  height: 35,
                   child: Center(child: Text('긴 글')),
                 ),
               ],
               onPressed: (int index) {
                 setState(() {
-                  if(index == 0) {
+                  if (index == 0) {
                     _isSelected[1] = false;
                     _isSelected[0] = true;
                     _isShort = true;
@@ -124,13 +90,56 @@ class _SearchPageState extends State<SearchPage> {
                 });
               },
               isSelected: _isSelected,
-              selectedColor: Colors.blue,
+              selectedColor: colorOnSelection(),
+              borderColor: Colors.transparent,
+              selectedBorderColor: Colors.transparent,
             ),
-
-
-          ],
-        ),
-      )
-    );
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextFormField(
+                    validator: (val) =>
+                        text.length < 1 ? '검색할 내용을 입력해 주세요.' : null,
+                    controller: textFieldController,
+                    decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              await setState(() {
+                                if (_isShort) {
+                                  type = 'short';
+                                } else {
+                                  type = 'long';
+                                }
+                              });
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => ReadPost(text, type,
+                                          user != null ? user.uid : 'Null')));
+                            }
+                          },
+                        )),
+                    onChanged: (val) {
+                      setState(() {
+                        text = val;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 }

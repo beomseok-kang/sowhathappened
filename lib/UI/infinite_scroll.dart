@@ -13,42 +13,44 @@ class InfiniteScroller extends StatefulWidget {
   final Function(String type, DocumentSnapshot last) onLoad;
   final List<DocumentSnapshot> docs;
 
-  InfiniteScroller({
-    @required this.type,
-    @required this.onRefresh,
-    @required this.onLoad,
-    @required this.docs
-  });
+  InfiniteScroller(
+      {@required this.type,
+      @required this.onRefresh,
+      @required this.onLoad,
+      @required this.docs});
 
   @override
   _InfiniteScrollerState createState() => _InfiniteScrollerState();
 }
 
 class _InfiniteScrollerState extends State<InfiniteScroller> {
-  
   DocumentSnapshot last;
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   @override
   void initState() {
-    setState(() {
-      last = widget.docs[widget.docs.length - 1];
-    });
+    if (widget.docs != null) {
+      setState(() {
+        last = widget.docs[widget.docs.length - 1];
+      });
+    }
     super.initState();
   }
 
   void _onScrollLoad() async {
     await widget.onLoad(widget.type, last);
     setState(() {
-      if(widget.docs != null) {
+      if (widget.docs != null) {
         last = widget.docs[widget.docs.length - 1];
       }
     });
     _refreshController.loadComplete();
   }
+
   void _onRefresh() async {
     await widget.onRefresh();
     setState(() {
-      if(widget.docs != null) {
+      if (widget.docs != null) {
         last = widget.docs[widget.docs.length - 1];
       }
     });
@@ -58,37 +60,27 @@ class _InfiniteScrollerState extends State<InfiniteScroller> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    if (widget.docs == null) {
-      return Loading();
-    } else {
-      return SmartRefresher(
-        enablePullUp: true,
-        enablePullDown: true,
-        controller: _refreshController,
-        onLoading: _onScrollLoad,
-        onRefresh: _onRefresh,
-        child: ListView.builder(
+    return SmartRefresher(
+      enablePullUp: true,
+      enablePullDown: true,
+      controller: _refreshController,
+      onLoading: _onScrollLoad,
+      onRefresh: _onRefresh,
+      child: ListView.builder(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
           itemCount: widget.docs.length,
           itemBuilder: (BuildContext context, int index) {
             final ds = widget.docs[index];
             final props = ListViewTileProps(
-              postIndex: ds.data['포스트인덱스'],
-              texts: ds.data['글'],
-              text: '',
-              type: ds.data['타입'],
-              topics: ds.data['주제']
-            );
+                postIndex: ds.data['포스트인덱스'],
+                texts: ds.data['글'],
+                text: '',
+                type: ds.data['타입'],
+                topics: ds.data['주제']);
             return ListViewTile(
-                context: context,
-                index: index,
-                uid: user.uid,
-                props: props
-            );
-          }
-        ),
-      );
-    }
+                context: context, index: index, uid: user.uid, props: props);
+          }),
+    );
   }
 }

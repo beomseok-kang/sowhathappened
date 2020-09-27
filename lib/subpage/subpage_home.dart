@@ -30,11 +30,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final queries = Provider.of<Queries>(context);
-    bool _hasData () {
-      return queries.qsShort != null
-        && queries.qsLong != null
-        && queries.qsShortHot != null
-        && queries.qsLongHot != null;
+    bool _hasData() {
+      return queries.qsShort != null &&
+          queries.qsLong != null &&
+          queries.qsShortHot != null &&
+          queries.qsLongHot != null;
     }
 
     return Scaffold(
@@ -42,11 +42,11 @@ class _HomeState extends State<Home> {
       body: _hasData()
           ? _buildBody(queries)
           : Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Loading(),
-        ],
-      ),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Loading(),
+              ],
+            ),
     );
   }
 
@@ -57,38 +57,46 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SizedBox(height: 40,),
+          SizedBox(
+            height: 40,
+          ),
           Padding(
-            padding: EdgeInsets.fromLTRB(20,0,0,10),
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
             child: Text('추천 글', style: bigHeaderStyle()),
           ),
           searchBar(context),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           RankDocList(
             docList: queries.qsShortHot,
             qsType: 'short',
-            title: Text('핫한 짧은 글',
+            title: Text(
+              '핫한 짧은 글',
               style: TextStyle(fontSize: 22),
             ),
           ),
           RankDocList(
             docList: queries.qsLongHot,
             qsType: 'long',
-            title: Text('핫한 긴 글',
+            title: Text(
+              '핫한 긴 글',
               style: TextStyle(fontSize: 22),
             ),
           ),
           RankList(
             qsType: 'short',
             qs: queries.qsShort,
-            title: Text('짧은 글 랭킹',
+            title: Text(
+              '짧은 글 랭킹',
               style: TextStyle(fontSize: 22),
             ),
           ),
           RankList(
             qs: queries.qsLong,
             qsType: 'long',
-            title: Text('긴 글 랭킹',
+            title: Text(
+              '긴 글 랭킹',
               style: TextStyle(fontSize: 22),
             ),
           ),
@@ -97,7 +105,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget searchBar (context) {
+  Widget searchBar(context) {
     return Container(
       width: double.maxFinite,
       margin: EdgeInsets.all(20),
@@ -106,22 +114,23 @@ class _HomeState extends State<Home> {
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
-                offset: Offset(0,13),
+                offset: Offset(0, 13),
                 blurRadius: 50,
-                color: Color.fromRGBO(196, 194, 222, 0.16)
-            )
-          ]
-      ),
+                color: Color.fromRGBO(196, 194, 222, 0.16))
+          ]),
       child: InkWell(
         onTap: () {
-          Navigator.push(context, CupertinoPageRoute(
-              builder: (context) => SearchPage()));
+          Navigator.push(
+              context, CupertinoPageRoute(builder: (context) => SearchPage()));
         },
         child: Row(
           children: [
             Padding(
               padding: EdgeInsets.all(10.0),
-              child: Icon(Icons.search, color: Colors.black26,),
+              child: Icon(
+                Icons.search,
+                color: Colors.black26,
+              ),
             )
           ],
         ),
